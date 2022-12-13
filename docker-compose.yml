@@ -1,0 +1,36 @@
+version: '3.8'
+volumes:
+  db-store:
+    driver: local
+services:
+  db:
+    image: mysql:8.0.31
+    platform: linux/x86_64
+    ports:
+      - '${MYSQL_PORT}:3306'
+    environment:
+      - MYSQL_DATABASE=${MYSQL_DATABASE}
+      - MYSQL_ROOT_PASSWORD=${MYSQL_PASSWORD}
+      - TZ=${MYSQL_TZ}
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-proot"]
+      timeout: 20s
+      retries: 10
+    volumes:
+      - db-store:/var/lib/mysql
+      - ./docker/mysql/my.cnf:/etc/my.cnf
+      - ./docker/mysql/log:/var/log/mysql
+  api:
+    build: .
+    tty: true
+    ports:
+      - ${API_PORT}:8080
+    env_file:
+      - .env
+    volumes:
+      - .:/app:cached
+    depends_on:
+      db:
+        condition: service_healthy
+
+
