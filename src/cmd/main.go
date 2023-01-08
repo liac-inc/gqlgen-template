@@ -3,20 +3,22 @@ package main
 import (
 	"fmt"
 
-	"github.com/golang-migrate/migrate"
-	"github.com/golang-migrate/migrate/database/mysql"
+	"github.com/golang-migrate/migrate/v4"
+	"github.com/golang-migrate/migrate/v4/database/postgres"
+	_ "github.com/golang-migrate/migrate/v4/source/file"
+
 	"github.com/ueryooo/gqlgen-template/src/db"
 	"github.com/ueryooo/gqlgen-template/src/graph"
 )
 
 func main() {
-	if db, err := db.MysqlInit(); err != nil {
+	if db, err := db.Connect(); err != nil {
 		panic(err)
 	} else {
-		driver, _ := mysql.WithInstance(db.DB, &mysql.Config{})
+		driver, _ := postgres.WithInstance(db, &postgres.Config{})
 		m, _ := migrate.NewWithDatabaseInstance(
 			"file://db/migrations",
-			"mysql",
+			"postgres",
 			driver,
 		)
 
@@ -30,5 +32,4 @@ func main() {
 
 		graph.ServerInit()
 	}
-
 }

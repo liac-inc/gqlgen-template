@@ -2,7 +2,7 @@ package main
 
 import (
 	"fmt"
-	"io/ioutil"
+
 	"os"
 
 	"github.com/ueryooo/gqlgen-template/src/db"
@@ -11,7 +11,7 @@ import (
 const seedDir = "/db/seeds/"
 
 func main() {
-	db, err := db.MysqlInit()
+	db, err := db.Connect()
 	if err != nil {
 		panic(err)
 	}
@@ -23,7 +23,7 @@ func main() {
 	}
 
 	for _, file := range files {
-		bytes, err := ioutil.ReadFile(currentDir + seedDir + file.Name())
+		bytes, err := os.ReadFile(currentDir + seedDir + file.Name())
 		if err != nil {
 			continue
 		}
