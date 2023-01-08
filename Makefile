@@ -2,21 +2,20 @@
 include .env
 .EXPORT_ALL_VARIABLES:
 migrate-up:
-	migrate -database "mysql://${MYSQL_USERNAME}:${MYSQL_PASSWORD}@tcp(${MYSQL_HOST}:${MYSQL_PORT})/${MYSQL_DATABASE}?charset=utf8mb4&parseTime=True&loc=Local&multiStatements=True" \
+	migrate -database "postgres://${POSTGRES_USER}:${POSTGRES_PASSWORD}@${POSTGRES_HOST}:${POSTGRES_PORT}/${POSTGRES_DB}?sslmode=disable" \
 	-path db/migrations up
 
-# マイグレーションDown実行
 include .env
 .EXPORT_ALL_VARIABLES:
 migrate-down:
-	migrate -database "mysql://${MYSQL_USERNAME}:${MYSQL_PASSWORD}@tcp(${MYSQL_HOST}:${MYSQL_PORT})/${MYSQL_DATABASE}?charset=utf8mb4&parseTime=True&loc=Local&multiStatements=True" \
+	migrate -database "postgres://${POSTGRES_USER}:${POSTGRES_PASSWORD}@${POSTGRES_HOST}:${POSTGRES_PORT}/${POSTGRES_DB}?sslmode=disable" \
 	-path db/migrations down -all
 
 # マイグレーションファイルのクリア
 include .env
 .EXPORT_ALL_VARIABLES:
 migrate-clear:
-	migrate -database "mysql://${MYSQL_USERNAME}:${MYSQL_PASSWORD}@tcp(${MYSQL_HOST}:${MYSQL_PORT})/${MYSQL_DATABASE}?charset=utf8mb4&parseTime=True&loc=Local&multiStatements=True" \
+	migrate -database "postgres://${POSTGRES_USER}:${POSTGRES_PASSWORD}@${POSTGRES_HOST}:${POSTGRES_PORT}/${POSTGRES_DB}?sslmode=disable" \
 	-path db/migrations force 1
 
 # マイグレーションファイルの作成(tableName = テーブル名(複数形)として引数に渡す)
