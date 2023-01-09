@@ -7,8 +7,8 @@ import (
 	"github.com/golang-migrate/migrate/v4/database/postgres"
 	_ "github.com/golang-migrate/migrate/v4/source/file"
 
-	"github.com/ueryooo/gqlgen-template/src/db"
-	"github.com/ueryooo/gqlgen-template/src/graph"
+	"github.com/liac-inc/gqlgen-template/src/db"
+	"github.com/liac-inc/gqlgen-template/src/graph"
 )
 
 func main() {
@@ -17,7 +17,7 @@ func main() {
 	} else {
 		driver, _ := postgres.WithInstance(db, &postgres.Config{})
 		m, _ := migrate.NewWithDatabaseInstance(
-			"file://db/migrations",
+			"file://db/migration",
 			"postgres",
 			driver,
 		)
@@ -30,6 +30,6 @@ func main() {
 			fmt.Println("======== Migrations Succeed ! ========")
 		}
 
-		graph.ServerInit()
+		graph.ServerInit(db)
 	}
 }
