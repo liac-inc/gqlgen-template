@@ -5,10 +5,10 @@ import (
 
 	"os"
 
-	"github.com/ueryooo/gqlgen-template/src/db"
+	"github.com/liac-inc/gqlgen-template/src/db"
 )
 
-const seedDir = "/db/seeds/"
+const seedDir = "/db/seed/"
 
 func main() {
 	db, err := db.Connect()
